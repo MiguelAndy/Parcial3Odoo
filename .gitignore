@@ -1,0 +1,13 @@
+# Código de Odoo: cada integrante lo clona (ver GUIA-PASOS.md, paso 2.1)
+odoo/
+
+# Entorno virtual de Python
+venv/
+__pycache__/
+*.pyc
+
+# Sistema / editores
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
