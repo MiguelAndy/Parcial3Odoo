@@ -3,6 +3,19 @@
 Carpeta del proyecto: `Documentos\parcial3-odoo`
 Guarda cada captura en `capturas\` con el nombre indicado (📸). Usa **Win + Shift + S** para capturar.
 
+> **Para el grupo:** este repositorio trae solo nuestros archivos (`Dockerfile`, `docker-compose.yml`, los `.conf` y esta guía). El código de Odoo **no se sube** (pesa cientos de MB): cada uno lo clona en el paso 2.1. Probado en Windows 11 con Python 3.12, PostgreSQL 18 y Docker 29.
+
+### Archivos del repositorio
+
+| Archivo | Para qué |
+|---|---|
+| `GUIA-PASOS.md` | Esta guía |
+| `odoo.local.conf` | Configuración para correr Odoo nativo (Fase 2) |
+| `Dockerfile` | Construye la imagen de Odoo **desde el código clonado** (Fase 3) |
+| `docker-compose.yml` | Levanta Odoo + PostgreSQL 16 en contenedores (Fase 3) |
+| `odoo.docker.conf` | Configuración de Odoo dentro del contenedor |
+| `.gitignore` / `.dockerignore` | Evitan subir el código de Odoo y el venv |
+
 ---
 
 ## FASE 1 – Requisitos (Windows 11)
@@ -13,7 +26,7 @@ Instala lo que falte. **Con cada instalador, deja las opciones por defecto**, sa
 |---|---|---|
 | Git | https://git-scm.com/download/win | Por defecto |
 | Python **3.12** | https://www.python.org/downloads/windows/ | ✅ Marca **"Add python.exe to PATH"**. No uses 3.13/3.14: algunas dependencias de Odoo 19 no tienen paquetes para esas versiones |
-| PostgreSQL **16** | https://www.postgresql.org/download/windows/ | Anota la contraseña que le pongas al usuario `postgres` |
+| PostgreSQL **16, 17 o 18** | https://www.postgresql.org/download/windows/ | Anota la contraseña que le pongas al usuario `postgres`. Si ya lo tienes, sirve cualquiera desde la 13 |
 | Docker Desktop | https://www.docker.com/products/docker-desktop/ | Usa el backend WSL2 (te pedirá reiniciar) |
 | Build Tools de C++ (por si acaso) | https://visualstudio.microsoft.com/visual-cpp-build-tools/ | Marca "Desarrollo para el escritorio con C++". Solo si `pip install` falla compilando algo |
 
@@ -22,9 +35,11 @@ Verifica en **PowerShell**:
 ```powershell
 git --version
 python --version
-psql --version      # si no lo reconoce, usa la ruta: & "C:\Program Files\PostgreSQL\16\bin\psql.exe" --version
 docker --version
+Get-ChildItem "C:\Program Files\PostgreSQL"   # el nombre de la carpeta (16, 17, 18...) es tu versión de PostgreSQL
 ```
+
+> En los comandos de abajo aparece `PostgreSQL\18`. **Cambia el 18 por tu versión.**
 
 📸 `01-versiones.png` – PowerShell con las 4 versiones.
 
@@ -32,10 +47,12 @@ docker --version
 
 ## FASE 2 – Odoo desde el repositorio (instalación nativa)
 
-### 2.1 Clonar el repositorio (solo la rama 19.0, sin historial)
+### 2.1 Clonar el repositorio del grupo y, dentro, el de Odoo (solo la rama 19.0, sin historial)
 
 ```powershell
-cd "$HOME\Documents\parcial3-odoo"
+cd "$HOME\Documents"
+git clone <URL-del-repo-del-grupo> parcial3-odoo
+cd parcial3-odoo
 git clone --depth 1 --branch 19.0 https://github.com/odoo/odoo.git
 ```
 
@@ -64,7 +81,7 @@ pip install -r requirements.txt
 Odoo **no permite** conectarse con el superusuario `postgres`, así que creamos uno propio:
 
 ```powershell
-& "C:\Program Files\PostgreSQL\16\bin\psql.exe" -U postgres -c "CREATE ROLE odoo WITH LOGIN CREATEDB PASSWORD 'odoo';"
+& "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -c "CREATE ROLE odoo WITH LOGIN CREATEDB PASSWORD 'odoo';"
 ```
 
 (Te pedirá la contraseña de `postgres` que pusiste al instalar.)
