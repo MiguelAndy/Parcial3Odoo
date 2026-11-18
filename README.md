@@ -51,7 +51,7 @@ Get-ChildItem "C:\Program Files\PostgreSQL"   # el nombre de la carpeta (16, 17,
 
 ```powershell
 cd "$HOME\Documents"
-git clone <URL-del-repo-del-grupo> parcial3-odoo
+git clone https://github.com/MiguelAndy/Parcial3Odoo.git parcial3-odoo
 cd parcial3-odoo
 git clone --depth 1 --branch 19.0 https://github.com/odoo/odoo.git
 ```
