@@ -177,3 +177,6 @@ Cuando tengas las capturas, se arma la presentación con:
 | `Address already in use` / puerto 8069 ocupado | Cierra el Odoo nativo (Ctrl+C) antes de levantar Docker |
 | Docker: `error during connect` | Abre Docker Desktop y espera a que el motor esté corriendo |
 | Los PDF no se generan | Falta `wkhtmltopdf`; no es necesario para el parcial |
+| Docker: el build parece congelado en `transferring context` | No está colgado: envía ~1.3 GB de código de Odoo. El primer build tarda unos 5 minutos en total |
+| Docker: `port is already allocated` en el puerto 5432 | Tu PostgreSQL nativo usa el 5432. El `docker-compose.yml` no publica ese puerto a propósito: no agregues `ports: 5432:5432` al servicio `db` |
+| Docker: aviso `missing --http-interface ... using 0.0.0.0` en los logs | Es solo un aviso de Odoo 19, no un error. Se puede ignorar |

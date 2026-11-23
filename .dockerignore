@@ -1,4 +1,5 @@
 odoo/.git
-venv
+**/venv
+**/__pycache__
 capturas
 *.md
